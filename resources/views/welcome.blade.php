@@ -4,13 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>TODO List</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <!-- Styles -->
-        <style>
+        {{--<style>
             html, body {
                 background-color: #fff;
                 color: #636b6f;
@@ -61,10 +61,11 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
-        </style>
+        </style>--}}
+
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        {{--<div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -95,6 +96,17 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
+        </div>--}}
+        <div id="app">
+            <div class="container">
+                <div class="row">
+                   <div class="col-md-12">
+                        <task></task>
+                   </div>
+                </div>
+            </div>
         </div>
+
+        <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
