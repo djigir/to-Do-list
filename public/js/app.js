@@ -1968,7 +1968,7 @@ __webpack_require__.r(__webpack_exports__);
     createTask: function createTask() {
       var _this = this;
 
-      var uri = 'http://to-do-list/tasks';
+      var uri = 'http://to-do-list/api/tasks';
       Axios.post(uri, this.task).then(function (response) {
         _this.$router.push({
           name: 'TaskList'

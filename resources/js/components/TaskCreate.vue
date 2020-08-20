@@ -33,7 +33,7 @@
         }        ,
         methods: {
             createTask: function () {
-                let uri = 'http://to-do-list/tasks';
+                let uri = 'http://to-do-list/api/tasks';
                 Axios.post(uri, this.task)
                     .then((response) => {
                         this.$router.push({name: 'TaskList'})
