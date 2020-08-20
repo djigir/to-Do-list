@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Task as TaskResource;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
-use Illuminate\Http\Request;
-
 
 class TaskController extends Controller
 {
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function home() {
+        return view('vueApp');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,30 +23,24 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
-        $tasks = Task::orderBy('created_at', 'desc')->paginate(10);
+        $tasks = Task::orderBy('id', 'DESC')->paginate(4);
 
-        return TaskResource::collection($tasks);
+        return response()->json($tasks);
     }
 
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreTaskRequest $storeTaskRequest
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $storeTaskRequest)
     {
-        $task = $request->isMethod('put') ? Task::findOrFail($request->get('task_id')) : new Task();
+        $task = Task::create([
+            'title' => $storeTaskRequest->get('title'),
+            'description' => $storeTaskRequest->get('description')
+        ]);
 
-        $task->id = $request->input('task_id');
-        $task->title = $request->input('title');
-        $task->description = $request->input('description');
-
-        if ($task->save()){
-            return new TaskResource($task);
-        }
+        return response()->json(['status' => 'success', 'msg' => 'Задача создана успешно']);
     }
 
     /**
@@ -52,9 +53,42 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($id);
 
-        return new TaskResource($task);
+        return response()->json($task);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $task = Task::findOrFail($id);
+
+        return response()->json($task);
+    }
+
+
+    /**
+     * @param UpdateTaskRequest $updateTaskRequest
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UpdateTaskRequest $updateTaskRequest, $id)
+    {
+        $task = Task::findOrFail($id);
+        if ($task) {
+            $task->update([
+                'title' => $updateTaskRequest->get('title'),
+                'description' => $updateTaskRequest->get('description')
+            ]);
+
+            return response()->json(['status' => 'success', 'msg' => 'Задача успешно обновлена']);
+        }else {
+            return response()->json(['status' => 'error', 'msg' => 'Ошибка обновления']);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -65,9 +99,13 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $task = Task::findOrFail($id);
+        if ($task) {
+            $task->delete();
 
-        if ($task->delete()){
-            return new TaskResource($task);
+            return response()->json(['status' => 'success', 'msg' => 'Задача успешно удалена']);
+        }else {
+            return response()->json(['status' => 'error', 'msg' => 'Ошибка удаления']);
         }
+
     }
 }
