@@ -29,13 +29,4 @@ class UpdateTaskRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'title.min' => "Поле 'Название' должно содаржать минимум 5 символов",
-            'title.max' => "Поле 'Название' не должно превышать 30 символов",
-            'description.min' => "Поле 'Описание' должно содаржать минимум 5 символов",
-            'description.max' => "Поле 'Описание' не должно превышать 50 символов"
-        ];
-    }
 }

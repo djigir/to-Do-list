@@ -6,7 +6,7 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 
-class TaskController extends Controller
+class TaskController extends BaseController
 {
 
     /**
@@ -40,7 +40,7 @@ class TaskController extends Controller
             'description' => $storeTaskRequest->get('description')
         ]);
 
-        return response()->json(['status' => 'success', 'msg' => 'Задача создана успешно']);
+        $this->responseJSON(200, 'Задача создана успешно');
     }
 
     /**
@@ -84,9 +84,9 @@ class TaskController extends Controller
                 'description' => $updateTaskRequest->get('description')
             ]);
 
-            return response()->json(['status' => 'success', 'msg' => 'Задача успешно обновлена']);
+            $this->responseJSON(200, 'Задача успешно обновлена');
         }else {
-            return response()->json(['status' => 'error', 'msg' => 'Ошибка обновления']);
+            $this->responseJSON(404, 'Ошибка обновления');
         }
     }
 
@@ -99,12 +99,12 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $task = Task::findOrFail($id);
-        if ($task) {
+        if (!$task == null) {
             $task->delete();
 
-            return response()->json(['status' => 'success', 'msg' => 'Задача успешно удалена']);
+            $this->responseJSON(200, 'Задача успешно удалена');
         }else {
-            return response()->json(['status' => 'error', 'msg' => 'Ошибка удаления']);
+            $this->responseJSON(404, 'Ошибка удаления');
         }
 
     }

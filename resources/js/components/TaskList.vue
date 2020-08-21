@@ -23,7 +23,7 @@
                     <td>
                         <router-link class="btn btn-info btn-sm" v-bind:to="{name: 'TaskShow', params: {id: task.id}}">Подробнее</router-link>
                         <router-link class="btn btn-warning btn-sm" v-bind:to="{name: 'TaskEdit', params: {id: task.id}}">Редактировать</router-link>
-                        <router-link class="btn btn-danger btn-sm" v-bind:to="{name: 'TaskDelete', params: {id: task.id}}">Удалить</router-link>
+                        <button type="submit" @click.prevent="deleteTask(task.id)" class="btn btn-danger btn-sm">Удалить</button>
                     </td>
                 </tr>
             </tbody>
@@ -33,7 +33,15 @@
 </template>
 
 <script>
+    import pagination from 'laravel-vue-pagination';
+
+
     export default {
+
+        components: {
+            pagination
+        },
+
         data() {
             return {
                 tasks: {},
@@ -53,15 +61,16 @@
                     .then(response => {
                         this.tasks = response.data;
                     });
-            }
-        },
-        /*computed: {
-            filteredTasks: function () {
-                if (this.tasks.length){
-                    return this.tasks;
+            },
+            deleteTask(id) {
+                if (confirm('Вы уверены что хотите удалить эту задачу?')){
+                    Axios.delete('http://to-do-list/api/tasks/' + id)
+                        .then((response) => {
+                            this.getResults();
+                        });
                 }
             }
-        }*/
+        },
     }
 </script>
 
