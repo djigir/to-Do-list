@@ -1,7 +1,7 @@
 <template id="task-list">
     <div class="row">
         <section>
-            <router-link class="btn btn-xs btn-primary" v-bind:to="{path: '/task-create'}">
+            <router-link class="btn btn-xs btn-primary" v-bind:to="{path: '/task-create_edit'}">
                 <span class="glyphicon glyphicon-plus"></span>
                 Создать новую задачу
             </router-link>
@@ -22,7 +22,7 @@
                     <td>{{ task.description }}</td>
                     <td>
                         <router-link class="btn btn-info btn-sm" v-bind:to="{name: 'TaskShow', params: {id: task.id}}">Подробнее</router-link>
-                        <router-link class="btn btn-warning btn-sm" v-bind:to="{name: 'TaskEdit', params: {id: task.id}}">Редактировать</router-link>
+                        <router-link class="btn btn-warning btn-sm" v-bind:to="{name: 'TaskCreateEdit', params: {id: task.id}}">Редактировать</router-link>
                         <button type="submit" @click.prevent="deleteTask(task.id)" class="btn btn-danger btn-sm">Удалить</button>
                     </td>
                 </tr>
@@ -69,7 +69,7 @@
                             this.getResults();
                         });
                 }
-            }
+            },
         },
     }
 </script>
